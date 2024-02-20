@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  bot:
+    build: .
+    env_file:
+      - bot.env
+    networks:
+      - default
+    links:
+      - db
+    depends_on:
+      - db
+  db:
+    image: mongo
+    env_file:
+      - bot.env
+    volumes:
+      - data:/data/db
+    expose:
+      - 27017
+    networks:
+      - default
+  restarter:
+    image: docker:cli
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+    command: ["/bin/sh", "-c", "while true; do sleep 86400; docker restart codebuddy-bot-1; done"]
+    restart: unless-stopped
+
+volumes:
+  data:
