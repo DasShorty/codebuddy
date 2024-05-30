@@ -1,9 +1,11 @@
 package de.dasshorty.codebuddy
 
 import de.dasshorty.codebuddy.database.MongoConnection
+import de.dasshorty.codebuddy.twitch.TwitchBot
 import de.dasshorty.codebuddy.voice.VoiceManager
 import de.dasshorty.codebuddy.welcome.WelcomeListener
 import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 
@@ -28,5 +30,7 @@ fun main() {
 
     val jda = builder.build().awaitReady()
 
-    voiceManager.cleanUpDb(jda.guilds[0])
+    val guild = jda.guilds[0]
+    TwitchBot(guild)
+    voiceManager.cleanUpDb(guild)
 }
