@@ -26,7 +26,8 @@ class TwitchBot(private val guild: Guild) {
         .withEnableChat(true)
         .build()
 
-    private var announcementId: String? = null
+
+    private lateinit var announcementId: String
     private lateinit var schedule: ScheduledFuture<*>
 
     init {
@@ -50,8 +51,8 @@ class TwitchBot(private val guild: Guild) {
 
             this.schedule.cancel(true)
 
-            channel.history.getMessageById(this.announcementId!!)?.delete()?.queue()
-            this.announcementId = null
+            channel.history.getMessageById(this.announcementId)?.delete()?.queue()
+            this.announcementId = ""
 
         }
 
@@ -71,7 +72,7 @@ class TwitchBot(private val guild: Guild) {
                 return@onEvent
             }
 
-            channel.sendMessage("<@1209123147412930571>")
+            channel.sendMessage("<@&1209123147412930571>")
                 .addEmbeds(
                     EmbedBuilder()
                         .setAuthor(channelName, url)
@@ -85,26 +86,25 @@ class TwitchBot(private val guild: Guild) {
                 ).addActionRow(Button.link(url, "Auf Twitch anschauen")).flatMap(Message::crosspost).queue {
                     this.announcementId = it.id
                     println("Announcement has been send into channel")
-
-                    this.schedule = Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate({
-
-                        this.updateThumbnail(stream)
-
-                    }, 0, 10, TimeUnit.SECONDS)
-
+                    this.scheduleUpdate(it.id, stream)
                 }
-
         }
     }
 
-    private fun updateThumbnail(stream: Stream) {
+    private fun scheduleUpdate(messageId: String, stream: Stream) {
 
-        if (this.announcementId == null) {
-            return
-        }
+        this.schedule = Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate({
 
-        val channel = this.guild.getNewsChannelById("1209124564584632440")!!
-        val messageById = channel.history.getMessageById(this.announcementId!!)!!
+            this.updateThumbnail(messageId, stream)
+
+        }, 0, 10, TimeUnit.SECONDS)
+
+    }
+
+    private fun updateThumbnail(messageId: String, stream: Stream) {
+
+        val channel = this.getNewsChannel()!!
+        val messageById = channel.history.getMessageById(messageId)!!
 
         val embed = messageById.embeds[0]
 
