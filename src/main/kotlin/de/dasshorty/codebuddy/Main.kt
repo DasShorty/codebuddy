@@ -28,6 +28,8 @@ fun main() {
     val voiceManager = VoiceManager()
     builder.addEventListeners(WelcomeListener(), voiceManager)
 
+    builder.setAutoReconnect(true)
+
     val jda = builder.build().awaitReady()
 
     val guild = jda.guilds[0]
