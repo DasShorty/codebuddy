@@ -15,7 +15,7 @@ dependencies {
     implementation("net.dv8tion:JDA:5.0.1")
     implementation("org.mongodb:mongodb-driver-kotlin-coroutine:4.11.0")
     implementation("org.mongodb:bson-kotlinx:5.1.2")
-    implementation("com.github.twitch4j:twitch4j:1.17.0")
+    implementation("com.github.twitch4j:twitch4j:1.21.0")
 }
 
 tasks {
