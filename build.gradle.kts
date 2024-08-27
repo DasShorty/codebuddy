@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.dv8tion:JDA:5.0.2")
+    implementation("net.dv8tion:JDA:5.1.0")
     implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.1.3")
     implementation("org.mongodb:bson-kotlinx:5.1.3")
     implementation("com.github.twitch4j:twitch4j:1.21.0")
