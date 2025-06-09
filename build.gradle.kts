@@ -14,7 +14,7 @@ repositories {
 dependencies {
     implementation("net.dv8tion:JDA:5.5.1")
     implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.5.1")
-    implementation("org.mongodb:bson-kotlinx:5.5.0")
+    implementation("org.mongodb:bson-kotlinx:5.5.1")
     implementation("com.github.twitch4j:twitch4j:1.24.0")
 }
 
